@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Dungeon Share</string>
+    <string name="welcome">Welcome to Dungeon Share!</string>
+    <string name="my_dungeons">My Dungeons</string>
+    <string name="play_dungeon">Play Dungeon</string>
+    <string name="look_for_dungeon">Look for Dungeon</string>
+    <string name="about_app">About App</string>
+</resources>
