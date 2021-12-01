@@ -23,9 +23,6 @@
             android:name=".Broadcast"
             android:exported="true" />
         <activity
-            android:name=".MyDungeonsActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
