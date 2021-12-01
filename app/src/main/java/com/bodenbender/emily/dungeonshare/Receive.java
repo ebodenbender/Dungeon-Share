@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.DiscoveryOptions;
+
 public class Receive extends AppCompatActivity {
 
     @Override
