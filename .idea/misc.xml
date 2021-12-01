@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_broadcast.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dm_dungeon_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/zburn/Documents/Dungeon-Share/app/src/main/res/layout/activity_broadcast.xml" value="0.11499493414387031" />
-        <entry key="..\:/Users/zburn/Documents/Dungeon-Share/app/src/main/res/layout/activity_main.xml" value="0.115625" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_my_dungeons.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_my_dungeons2.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_player_dungeon_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
