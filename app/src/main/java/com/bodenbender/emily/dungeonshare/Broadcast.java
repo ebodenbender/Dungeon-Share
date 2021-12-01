@@ -56,7 +56,7 @@ public class Broadcast extends AppCompatActivity
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo)
         {
             Nearby.getConnectionsClient(Broadcast.this)
-                    .requestConnection("requesting device", endpointId, connectionLifeCycleCallback);
+                    .requestConnection("requesting device", endpointId, connectionLifecycleCallback);
         }
 
         @Override
