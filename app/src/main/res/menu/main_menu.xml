@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/myDungeonsMenuOption"
+        android:title="@string/my_dungeons"
+        />
+    <item
+        android:id="@+id/placeholderMenuOption"
+        android:title="Placeholder text"
+        />
+    <item
+        android:id="@+id/aboutAppMenuOption"
+        android:title="@string/about_app"
+        />
+</menu>
