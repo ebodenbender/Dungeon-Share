@@ -5,4 +5,6 @@
     <string name="play_dungeon">Play Dungeon</string>
     <string name="look_for_dungeon">Look for Dungeon</string>
     <string name="about_app">About App</string>
+    <string name="new_dungeon">New Dungeon</string>
+    <string name="chat">Chat</string>
 </resources>

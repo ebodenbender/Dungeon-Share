@@ -10,12 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.android.gms.nearby.connection.Strategy;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -29,7 +27,6 @@ public class MainActivity extends AppCompatActivity
                     Manifest.permission.ACCESS_COARSE_LOCATION,
             };
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
-    private static final Strategy STRATEGY = Strategy.P2P_STAR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,29 +34,26 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button playDungeonButton = findViewById(R.id.playDungeonButton);
+        Button myDungeonsButton = findViewById(R.id.myDungeonsButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
         Button aboutAppButton = findViewById(R.id.aboutAppButton);
 
-        playDungeonButton.setOnClickListener(new View.OnClickListener()
+        myDungeonsButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent toBroadcast = new Intent(MainActivity.this, Broadcast.class);
-                startActivity(toBroadcast);
+                startActivity(new Intent(MainActivity.this, MyDungeonsActivity.class));
             }
         });
+    }
 
-        lookForDungeonButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent toReceive = new Intent(MainActivity.this, Receive.class);
-                startActivity(toReceive);
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // TODO define a main_menu.xml file; inflate the menu
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     @Override
