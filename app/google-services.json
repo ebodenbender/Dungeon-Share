@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "996844399691",
+    "project_id": "dungeon-share-aaee5",
+    "storage_bucket": "dungeon-share-aaee5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996844399691:android:38ef9f3eea209cf1c1b1ce",
+        "android_client_info": {
+          "package_name": "com.bodenbender.emily.dungeonshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996844399691-djjgiie964gbc165glo0oaes7ile671e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bodenbender.emily.dungeonshare",
+            "certificate_hash": "02138cd5e4b3952d06a89ea76579c627cc40a02d"
+          }
+        },
+        {
+          "client_id": "996844399691-lss0knkgeetr5bdn68krim5ab0gtutk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAujc0sqU5OfiqL_MUZbTUBs5TbrVhNYdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996844399691-lss0knkgeetr5bdn68krim5ab0gtutk0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
