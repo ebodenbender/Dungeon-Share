@@ -1,0 +1,47 @@
+{
+  "available_dungeon_keys": {
+    "some_unique_key1": "TRE223",
+    "some_unique_key2": "PWD212",
+    "some_unique_key3": "JBS531"
+  },
+
+  "active_dungeons": {
+    "some_unique_key1": {
+      "dungeon_name" : "Goblin Hideout",
+      "DM_name": "Zach Burnaby",
+      "share_code" : "AFR232"
+    }
+  },
+
+  "players_in_dungeon" : {
+    "AFR232": {
+      "device1": true,
+      "device2": true,
+      "device3": true,
+      "device4": false
+    }
+  },
+
+  "dungeon_rooms" : {
+    "AFR232": {
+      "some_unique_key1": {
+        "room_name": "Entrance",
+        "room_number": 1,
+        "room_description": "A couple of goblins here",
+        "visible_to_players": true
+      },
+      "some_unique_key2": {
+        "room_name": "Hideout",
+        "room_number": 2,
+        "room_description": "Most of the goblins are here with 1 ogre guard",
+        "visible_to_players": false
+      },
+      "some_unique_key3": {
+        "room_name": "Boss Area",
+        "room_number": 3,
+        "room_description": "This is the boss area",
+        "visible_to_players": false
+      }
+    }
+  }
+}

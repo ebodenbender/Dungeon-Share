@@ -1,0 +1,27 @@
+2 use cases
+
+DM:
+    Click "begin a share"
+    get list of available dungeon keys
+    select one
+    ask for DM name and dungeon name
+        add to active dungeons
+        set up players in dungeon
+        set up dungeon_rooms
+        set up listeners for all of those
+    See list of rooms and an add room button
+        asks for room data
+        then adds the room to database under dungeon_rooms/$share_code/
+
+
+Player:
+    list of dungeon name and dm names
+    click on item
+    prompt: enter share code and name
+        check share code
+        set up listener for players_in_dungeon true response
+        store the share code
+        set up a listener dungeon_rooms/$share_code/ and populate a list of rooms from that
+            when new room appears
+                check if visible to players
+            display as appropriate
