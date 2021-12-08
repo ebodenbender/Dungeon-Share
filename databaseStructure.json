@@ -1,0 +1,77 @@
+{
+  "available_room_keys": {
+    "some_unique_key1": "TRE223",
+    "some_unique_key2": "PWD212",
+    "some_unique_key3": "JBS531"
+  },
+  "active_shares": {
+    "some_unique_key1": {
+      "share_code": "AFR232",
+      "dungeon_name": "Goblin Hideout",
+      "DM_name": "Zach Burnaby",
+      "players_connected": {
+        "some_unique_key1": "device1",
+        "some_unique_key2": "device2",
+        "some_unique_key3": "device3"
+      },
+      "rooms": {
+        "some_unique_key1": {
+          "room_name": "Entrance",
+          "room_description": "A couple of goblins here",
+          "visible_to_players": {
+            "some_unique_key1": "device1",
+            "some_unique_key2": "device2",
+            "some_unique_key3": "device3"
+          }
+        },
+        "some_unique_key2": {
+          "room_name": "Hideout",
+          "room_description": "Most of the goblins are here with 1 ogre guard",
+          "visible_to_players": {
+            "some_unique_key": "device2"
+          }
+        },
+        "some_unique_key3": {
+          "room_name": "Boss Chamber",
+          "room_description": "Goblin leader with 2 bugbears",
+          "visible_to_players": {
+          }
+        }
+      }
+    },
+    "some_unique_key2": {
+      "share_code": "JKJ243",
+      "dungeon_name": "Mountain Forge",
+      "DM_name": "Zach Burnaby",
+      "players_connected": {
+        "some_unique_key1": "device13",
+        "some_unique_key2": "device23",
+        "some_unique_key3": "device31"
+      },
+      "rooms": {
+        "some_unique_key1": {
+          "room_name": "Entrance",
+          "room_description": "Deserted Forge area, coals still smoldering",
+          "visible_to_players": {
+            "some_unique_key1": "device13",
+            "some_unique_key2": "device23",
+            "some_unique_key3": "device31"
+          }
+        },
+        "some_unique_key2": {
+          "room_name": "Sleeping Chamber",
+          "room_description": "4 dwarfs lay sleeping",
+          "visible_to_players": {
+            "some_unique_key": "device23"
+          }
+        },
+        "some_unique_key3": {
+          "room_name": "Secret Tunnel",
+          "room_description": "This gloomy tunnel extends for at least 100 yards",
+          "visible_to_players": {
+          }
+        }
+      }
+    }
+  }
+}
