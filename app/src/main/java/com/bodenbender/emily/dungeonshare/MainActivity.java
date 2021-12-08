@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-{
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class MainActivity extends AppCompatActivity {
     public final String TAG = "MainActivityTag";
     private static final String[] REQUIRED_PERMISSIONS =
             new String[] {
@@ -28,11 +30,21 @@ public class MainActivity extends AppCompatActivity
             };
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
+    private FirebaseDatabase mFirebaseDatabase;
+    // just references messages portion of the database
+    private DatabaseReference mDatabaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference().child("emily");
+        mDatabaseReference.child("messages").child("message1").setValue("hello");
+        mDatabaseReference.child("messages").child("message2").setValue("goodbye");
+
 
         Button myDungeonsButton = findViewById(R.id.myDungeonsButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
