@@ -12,8 +12,4 @@ public class FirebaseDungeonHelper {
         mFirebaseDatabase = fdb;
         mDatabaseReference = mFirebaseDatabase.getReference();
     }
-
-    public String getAvailableRoomCode() {
-
-    }
 }
