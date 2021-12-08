@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("emily");
+        mDatabaseReference = mFirebaseDatabase.getReference();
         mDatabaseReference.child("messages").child("message1").setValue("hello");
         mDatabaseReference.child("messages").child("message2").setValue("goodbye");
 
