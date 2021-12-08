@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -31,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
     private FirebaseDatabase mFirebaseDatabase;
-    // just references messages portion of the database
-    private DatabaseReference mDatabaseReference;
+    FirebaseDungeonHelper firebaseDungeonHelper;
+
+    FirebaseDungeonHelper.DungeonKey dungeonKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,24 +43,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference();
-        mDatabaseReference.child("messages").child("message1").setValue("hello");
-        mDatabaseReference.child("messages").child("message2").setValue("goodbye");
 
+        firebaseDungeonHelper = new FirebaseDungeonHelper(mFirebaseDatabase);
 
         Button myDungeonsButton = findViewById(R.id.myDungeonsButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
         Button aboutAppButton = findViewById(R.id.aboutAppButton);
+
+
+
+        lookForDungeonButton.setOnClickListener(view -> {
+            Log.d(TAG, "onCreate: " + dungeonKey);
+            aboutAppButton.setText(dungeonKey.getKey());
+        });
+
+        aboutAppButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseDungeonHelper.returnDungeonKey(dungeonKey);
+                dungeonKey = null;
+                aboutAppButton.setText("Dungeon Key Returned");
+                aboutAppButton.setEnabled(false);
+            }
+        });
+
 
         myDungeonsButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(MainActivity.this, MyDungeonsActivity.class));
+                dungeonKey = firebaseDungeonHelper.getAvailableDungeonKey();
+                //startActivity(new Intent(MainActivity.this, MyDungeonsActivity.class));
             }
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -66,15 +87,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO define a main_menu.xml file; inflate the menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (!hasPermissions(this, REQUIRED_PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_REQUIRED_PERMISSIONS);
-        }
     }
 
     /** Returns true if the app was granted all the permissions. Otherwise, returns false. */
