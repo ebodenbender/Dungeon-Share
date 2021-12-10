@@ -1,6 +1,7 @@
 package com.bodenbender.emily.dungeonshare;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,13 +11,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public final String TAG = "MainActivityTag";
@@ -30,21 +38,11 @@ public class MainActivity extends AppCompatActivity {
             };
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
-    private FirebaseDatabase mFirebaseDatabase;
-    // just references messages portion of the database
-    private DatabaseReference mDatabaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference();
-        mDatabaseReference.child("messages").child("message1").setValue("hello");
-        mDatabaseReference.child("messages").child("message2").setValue("goodbye");
-
 
         Button myDungeonsButton = findViewById(R.id.myDungeonsButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
@@ -56,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 startActivity(new Intent(MainActivity.this, MyDungeonsActivity.class));
+            }
+        });
+
+        lookForDungeonButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(MainActivity.this, LookForDungeonActivity.class));
             }
         });
     }
