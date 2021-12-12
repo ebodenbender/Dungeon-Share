@@ -1,58 +1,61 @@
 package com.bodenbender.emily.dungeonshare;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dungeon
-{
+public class Dungeon {
     private String DM_name; // fields are case sensitive (should exactly match what's on the database)
     private String dungeon_name;
     private String share_code;
 
+    public Dungeon(String share_code) {
+        DM_name = "NO DM NAME";
+        dungeon_name = "NO DUNGEON NAME";
+        this.share_code = share_code;
+    }
+
     public Dungeon() {}
 
-    public Dungeon(String DM_name, String dungeon_name, String share_code)
-    {
+    public Dungeon(String DM_name, String dungeon_name, String share_code) {
         this.DM_name = DM_name;
         this.dungeon_name = dungeon_name;
         this.share_code = share_code;
     }
 
-    public void setDM_name(String DM_name) {
+    /**
+     * Function to set all dungeon values once DM creates dungeon
+     * @param DM_name name of Dungeon Master / Host
+     * @param dungeon_name name of the active dungeon
+     * @param share_code unique share code of the dungeon
+     */
+    public void setDungeonValues(String DM_name, String dungeon_name, String share_code) {
         this.DM_name = DM_name;
+        this.dungeon_name = dungeon_name;
+        this.share_code = share_code;
     }
 
+    /**
+     * Setter for dungeon_name
+     * @param dungeon_name name of the active dungeon
+     */
     public void setDungeon_name(String dungeon_name) {
         this.dungeon_name = dungeon_name;
     }
 
-    public void setShare_code(String share_code) {
-        this.share_code = share_code;
-    }
-
-    // TODO "No setter/field for DM_name found on class com.bodenbender.emily.dungeonshare.Dungeon"
-
-    public String getDungeonName()
-    {
-        return this.dungeon_name;
-    }
-
-    public String getDmName()
-    {
-        return this.DM_name;
-    }
-
-    public String getShareCode()
-    {
-        return this.share_code;
-    }
-
-    @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DM Name: " + this.DM_name + "\nDungeon Name: " + this.dungeon_name + "\nShare Code: " + this.share_code;
+    }
+
+    public String getDM_name() {
+        return DM_name;
+    }
+
+    public String getDungeon_name() {
+        return dungeon_name;
+    }
+
+    public String getShare_code() {
+        return share_code;
     }
 }

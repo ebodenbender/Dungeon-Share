@@ -3,7 +3,6 @@ package com.bodenbender.emily.dungeonshare;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -39,30 +38,18 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button myDungeonsButton = findViewById(R.id.myDungeonsButton);
+        Button hostDungeonButton = findViewById(R.id.hostDungeonButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
-        Button aboutAppButton = findViewById(R.id.aboutAppButton);
 
-        myDungeonsButton.setOnClickListener(new View.OnClickListener()
-        {
+                hostDungeonButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                startActivity(new Intent(MainActivity.this, MyDungeonsActivity.class));
-            }
-        });
-
-        lookForDungeonButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                startActivity(new Intent(MainActivity.this, LookForDungeonActivity.class));
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DungeonHostDetailActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -73,15 +60,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO define a main_menu.xml file; inflate the menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (!hasPermissions(this, REQUIRED_PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_REQUIRED_PERMISSIONS);
-        }
     }
 
     /** Returns true if the app was granted all the permissions. Otherwise, returns false. */
@@ -97,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Handles user acceptance (or denial) of our permission request. */
     @Override
-    public void onRequestPermissionsResult(
+    public void onRequestPermissionsResult (
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -114,5 +92,4 @@ public class MainActivity extends AppCompatActivity {
         }
         recreate();
     }
-
 }

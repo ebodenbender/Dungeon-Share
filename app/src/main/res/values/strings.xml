@@ -7,4 +7,13 @@
     <string name="about_app">About App</string>
     <string name="new_dungeon">New Dungeon</string>
     <string name="chat">Chat</string>
+    <string name="enter_your_name_and_the_name_of_the_dungeon">Enter your name and the name of the dungeon!</string>
+    <string name="cont">continue</string>
+    <string name="dm_name">DM Name</string>
+    <string name="dungeon_name">Dungeon Name</string>
+    <string name="add_new_room">add new room</string>
+    <string name="room_name">Room Name</string>
+    <string name="visible_to_players">Visible to Players</string>
+    <string name="room_description">Room Description</string>
+    <string name="done">done</string>
 </resources>
