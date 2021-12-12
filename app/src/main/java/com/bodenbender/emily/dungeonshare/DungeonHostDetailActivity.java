@@ -50,7 +50,7 @@ public class DungeonHostDetailActivity extends AppCompatActivity {
                     if (DMNameEditText.getText().toString().isEmpty() || DungeonNameEditText.getText().toString().isEmpty()) {
                         Toast.makeText(DungeonHostDetailActivity.this, "Please Fill All Names", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent intent = new Intent(DungeonHostDetailActivity.this, HostDungeonActivity.class);
+                        Intent intent = new Intent(DungeonHostDetailActivity.this, DungeonHostActivity.class);
                         intent.putExtra("shareCode", shareCode);
                         intent.putExtra("DMName", DMNameEditText.getText().toString());
                         intent.putExtra("DungeonName", DungeonNameEditText.getText().toString());

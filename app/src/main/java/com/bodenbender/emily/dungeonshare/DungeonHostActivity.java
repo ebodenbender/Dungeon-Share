@@ -27,7 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostDungeonActivity extends AppCompatActivity {
+public class DungeonHostActivity extends AppCompatActivity {
+    // TODO: Listen for players
 
     public static final String TAG = "HostDungeonActivityTag";
 
@@ -76,7 +77,7 @@ public class HostDungeonActivity extends AppCompatActivity {
         addRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HostDungeonActivity.this, RoomDetailsActivity.class);
+                Intent intent = new Intent(DungeonHostActivity.this, RoomDetailsActivity.class);
                 launcher.launch(intent);
             }
         });
@@ -97,7 +98,7 @@ public class HostDungeonActivity extends AppCompatActivity {
         adapter.setClickListener(new RoomAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(HostDungeonActivity.this, RoomDetailsActivity.class);
+                Intent intent = new Intent(DungeonHostActivity.this, RoomDetailsActivity.class);
                 intent.putExtra("room", dungeonRooms.get(position).first);
                 intent.putExtra("databaseKey", dungeonRooms.get(position).second);
                 launcher.launch(intent);
