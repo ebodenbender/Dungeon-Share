@@ -11,4 +11,9 @@
     <string name="cont">continue</string>
     <string name="dm_name">DM Name</string>
     <string name="dungeon_name">Dungeon Name</string>
+    <string name="add_new_room">add new room</string>
+    <string name="room_name">Room Name</string>
+    <string name="visible_to_players">Visible to Players</string>
+    <string name="room_description">Room Description</string>
+    <string name="done">done</string>
 </resources>

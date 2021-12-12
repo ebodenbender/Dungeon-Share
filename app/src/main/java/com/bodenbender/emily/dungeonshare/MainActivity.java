@@ -1,6 +1,7 @@
 package com.bodenbender.emily.dungeonshare;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -9,14 +10,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity implements KeyRequester {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
     public final String TAG = "MainActivityTag";
     private static final String[] REQUIRED_PERMISSIONS =
             new String[] {
@@ -28,51 +37,21 @@ public class MainActivity extends AppCompatActivity implements KeyRequester {
             };
     private static final int REQUEST_CODE_REQUIRED_PERMISSIONS = 1;
 
-    private FirebaseDatabase mFirebaseDatabase;
-    FirebaseDungeonHelper firebaseDungeonHelper;
-
-    FirebaseDungeonHelper.DungeonKey dungeonKey;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDungeonHelper = new FirebaseDungeonHelper(mFirebaseDatabase);
 
         Button hostDungeonButton = findViewById(R.id.hostDungeonButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
 
-        firebaseDungeonHelper.requestAvailableDungeonKey(this);
-
-        hostDungeonButton.setOnClickListener(new View.OnClickListener() {
+                hostDungeonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dungeonKey == null) {
-                    Toast.makeText(MainActivity.this, "No Dungeon Keys Available", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(MainActivity.this, DungeonHostDetailActivity.class);
-                    intent.putExtra("shareKey", dungeonKey.getKey());
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(MainActivity.this, DungeonHostDetailActivity.class);
+                startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        firebaseDungeonHelper.removeKeyListener();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (dungeonKey == null) {
-            firebaseDungeonHelper.addKeyListener();
-        }
     }
 
     @Override
@@ -96,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements KeyRequester {
 
     /** Handles user acceptance (or denial) of our permission request. */
     @Override
-    public void onRequestPermissionsResult(
+    public void onRequestPermissionsResult (
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -112,12 +91,5 @@ public class MainActivity extends AppCompatActivity implements KeyRequester {
             }
         }
         recreate();
-    }
-
-    @Override
-    public void onKeyAvailable(FirebaseDungeonHelper.DungeonKey dungeonKey) {
-        this.dungeonKey = dungeonKey;
-        firebaseDungeonHelper.removeKeyRequester();
-        firebaseDungeonHelper.removeKeyListener();
     }
 }

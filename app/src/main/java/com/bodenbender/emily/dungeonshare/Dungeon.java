@@ -6,7 +6,6 @@ import java.util.List;
 public class Dungeon {
     private String DM_name; // fields are case sensitive (should exactly match what's on the database)
     private String dungeon_name;
-    private boolean visible;
     private String share_code;
 
     public Dungeon(String share_code) {
@@ -14,6 +13,8 @@ public class Dungeon {
         dungeon_name = "NO DUNGEON NAME";
         this.share_code = share_code;
     }
+
+    public Dungeon() {}
 
     public Dungeon(String DM_name, String dungeon_name, String share_code) {
         this.DM_name = DM_name;
@@ -44,5 +45,17 @@ public class Dungeon {
     @Override
     public String toString() {
         return "DM Name: " + this.DM_name + "\nDungeon Name: " + this.dungeon_name + "\nShare Code: " + this.share_code;
+    }
+
+    public String getDM_name() {
+        return DM_name;
+    }
+
+    public String getDungeon_name() {
+        return dungeon_name;
+    }
+
+    public String getShare_code() {
+        return share_code;
     }
 }

@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/Dungeon-Share/app/src/main/res/layout/activity_dungeon_host_detail.xml" value="0.234375" />
+        <entry key="..\:/Android/Dungeon-Share/app/src/main/res/layout/activity_host_dungeon.xml" value="0.33559782608695654" />
         <entry key="..\:/Android/Dungeon-Share/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Android/Dungeon-Share/app/src/main/res/layout/activity_my_dungeons.xml" value="0.234375" />
+        <entry key="..\:/Android/Dungeon-Share/app/src/main/res/layout/activity_new_room.xml" value="0.33489583333333334" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_broadcast.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dm_dungeon_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
