@@ -58,7 +58,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
                     intent.putExtra("databaseKey", databaseKey);
                     intent.putExtra("new", false);
                 }
-                intent.putExtra("room", new DungeonRoom(nameEditText.getText().toString(), descriptionEditText.getText().toString(), visibleCheckBox.isChecked()));
+                intent.putExtra("room", new DungeonRoom(nameEditText.getText().toString(), descriptionEditText.getText().toString(), visibleCheckBox.isChecked(), -1));
                 setResult(RESULT_OK, intent);
                 finish();
             }
