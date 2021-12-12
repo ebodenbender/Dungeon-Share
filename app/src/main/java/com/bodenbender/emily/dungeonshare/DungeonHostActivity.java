@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -26,7 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostDungeonActivity extends AppCompatActivity {
+public class DungeonHostActivity extends AppCompatActivity {
+    // TODO: Listen for players
 
     public static final String TAG = "HostDungeonActivityTag";
 
@@ -41,6 +43,8 @@ public class HostDungeonActivity extends AppCompatActivity {
     private List<Pair<DungeonRoom, String>> dungeonRooms;
 
     private RecyclerView roomRecyclerView;
+    private RoomAdapter adapter;
+
 
     ActivityResultLauncher<Intent> launcher;
 
@@ -48,8 +52,6 @@ public class HostDungeonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_dungeon);
-
-        dungeonRooms = new ArrayList<>();
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -75,11 +77,35 @@ public class HostDungeonActivity extends AppCompatActivity {
         addRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HostDungeonActivity.this, NewRoomActivity.class);
+                Intent intent = new Intent(DungeonHostActivity.this, RoomDetailsActivity.class);
                 launcher.launch(intent);
             }
         });
 
+        dungeonRooms = new ArrayList<>();
+        adapter = new RoomAdapter(this, new RoomAdapter.DungeonRoomList() {
+            @Override
+            public DungeonRoom getDungeonRoomAt(int position) {
+                return dungeonRooms.get(position).first;
+            }
+
+            @Override
+            public int getDungeonSize() {
+                return dungeonRooms.size();
+            }
+        });
+
+        adapter.setClickListener(new RoomAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(DungeonHostActivity.this, RoomDetailsActivity.class);
+                intent.putExtra("room", dungeonRooms.get(position).first);
+                intent.putExtra("databaseKey", dungeonRooms.get(position).second);
+                launcher.launch(intent);
+            }
+        });
+        roomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        roomRecyclerView.setAdapter(adapter);
         Log.d(TAG, "onCreate: " + shareCode + ", " + DMName + ", " + dungeonName);
 
         // TODO: Finish launcher callback code
@@ -107,8 +133,10 @@ public class HostDungeonActivity extends AppCompatActivity {
         dungeonRoomReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                dungeonRooms.add(new Pair<>(snapshot.getValue(DungeonRoom.class), snapshot.getKey()));
+                Pair<DungeonRoom, String> p = new Pair<>(snapshot.getValue(DungeonRoom.class), snapshot.getKey());
+                dungeonRooms.add(p);
                 // Notify Adapter
+                adapter.notifyItemInserted(dungeonRooms.indexOf(p));
                 Log.d(TAG, "onChildAdded: " + dungeonRooms.toString());
             }
 
@@ -121,6 +149,7 @@ public class HostDungeonActivity extends AppCompatActivity {
                         assert updatedRoom != null;
                         room.first.updateValues(updatedRoom);
                         // notify adapter
+                        adapter.notifyItemChanged(dungeonRooms.indexOf(room));
                         return;
                     }
                 }
@@ -131,8 +160,9 @@ public class HostDungeonActivity extends AppCompatActivity {
                 String removedKey = snapshot.getKey();
                 for (Pair<DungeonRoom, String> room: dungeonRooms) {
                     if (room.second.equals(removedKey)) {
+                        int itemIndex = dungeonRooms.indexOf(room);
                         dungeonRooms.remove(room);
-                        // notify adapter
+                        adapter.notifyItemRemoved(itemIndex);
                         return;
                     }
                 }
@@ -149,6 +179,7 @@ public class HostDungeonActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 }

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class NewRoomActivity extends AppCompatActivity {
+public class RoomDetailsActivity extends AppCompatActivity {
     public static final String TAG = "NewRoomActivityTag";
     EditText nameEditText;
     CheckBox visibleCheckBox;
@@ -21,7 +21,7 @@ public class NewRoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_room);
+        setContentView(R.layout.activity_room_details);
 
         nameEditText = findViewById(R.id.editTextRoomName);
         visibleCheckBox = findViewById(R.id.checkBoxVisibleToPlayers);
