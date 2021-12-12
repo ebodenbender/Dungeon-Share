@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DungeonShare">
         <activity
+            android:name=".HostDungeonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DungeonHostDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyDungeonsActivity"
             android:exported="false" />
         <activity

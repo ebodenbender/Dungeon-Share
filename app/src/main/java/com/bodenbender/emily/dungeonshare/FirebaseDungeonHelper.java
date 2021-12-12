@@ -23,6 +23,14 @@ public class FirebaseDungeonHelper {
     private FirebaseDatabase fdb;
     // just references messages portion of the database
     private DatabaseReference dungeonKeyReference;
+    private List<DungeonKey> availableDungeonKeys;
+    private ChildEventListener keyListener;
+
+    private KeyRequester keyRequester;
+
+    private DatabaseReference activeDungeonRef;
+    private DatabaseReference playersInDungeonRef;
+    private DatabaseReference dungeonRoomsRef;
 
     class DungeonKey {
         private String id;
@@ -48,19 +56,29 @@ public class FirebaseDungeonHelper {
         }
     }
 
-    List<DungeonKey> availableDungeonKeys;
+
 
     public FirebaseDungeonHelper(FirebaseDatabase fdb) {
         this.fdb = fdb;
-        dungeonKeyReference = fdb.getReference("/available_dungeon_keys");
+        dungeonKeyReference = this.fdb.getReference("/available_dungeon_keys");
 
         availableDungeonKeys = new ArrayList<>();
+        addKeyListener();
+    }
 
-        dungeonKeyReference.addChildEventListener(new ChildEventListener() {
+    public void removeKeyListener() {
+        if (keyListener != null) {
+            dungeonKeyReference.removeEventListener(keyListener);
+        }
+    }
+
+    public void addKeyListener() {
+        keyListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 availableDungeonKeys.add(new DungeonKey(snapshot.getKey(), snapshot.getValue(String.class)));
                 Log.d(TAG, "onChildAdded: " + availableDungeonKeys);
+                notifyKeyAvailable();
             }
 
             @Override
@@ -87,23 +105,42 @@ public class FirebaseDungeonHelper {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
+        };
+        dungeonKeyReference.addChildEventListener(keyListener);
     }
 
     /**
      * Gets an available dungeon key from Firebase, removes the key from Firebase and returns it
      * @return available DungeonKey object
      */
-    public DungeonKey getAvailableDungeonKey() {
-        // get the dungeon key
+    public void requestAvailableDungeonKey(KeyRequester keyRequester) {
         if (!availableDungeonKeys.isEmpty()) {
-            DungeonKey dk = availableDungeonKeys.remove(0);
-            // remove dungeon key from database
-            dungeonKeyReference.child(dk.id).removeValue();
-            return dk;
-        } else {
-            return null;
+            notifyKeyAvailable();
+        }
+        this.keyRequester = keyRequester;
+    }
+
+    public void removeKeyRequester() {
+        this.keyRequester = null;
+    }
+
+    private void notifyKeyAvailable() {
+        if (keyRequester != null) {
+            // get the dungeon key
+            DungeonKey dk = null;
+            if (!availableDungeonKeys.isEmpty()) {
+                dk = availableDungeonKeys.remove(0);
+                Log.d(TAG, "notifyKeyAvailable: Sending key " + dk.key);
+                // remove dungeon key from database
+
+                /****************************
+                 // NOT REMOVING KEYS DURING TESTING
+
+                 // dungeonKeyReference.child(dk.id).removeValue();
+                 */
+
+            }
+            keyRequester.onKeyAvailable(dk);
         }
     }
 
@@ -119,8 +156,30 @@ public class FirebaseDungeonHelper {
         }
     }
 
-    public String addActiveDungeon(DungeonKey dk) {
-        return "";
+    /**
+     * Set up database record for new dungeon with empty data to be filled in later. Called after
+     * selecting to make a new Dungeon-Share
+     *
+     * @param dk Dungeon Key for room identification
+     */
+    public void initDatabaseReferences(DungeonKey dk) {
+        // Set up active_dungeon
+        activeDungeonRef = fdb.getReference("/active_dungeons").child(dk.key);
+        // Set up players_in_dungeon
+        playersInDungeonRef = fdb.getReference("/players_in_dungeon").child(dk.key);
+        // Set up dungeon_rooms
+        dungeonRoomsRef = fdb.getReference("/dungeon_rooms").child(dk.key);
     }
 
+    public DatabaseReference getActiveDungeonRef() {
+        return activeDungeonRef;
+    }
+
+    public DatabaseReference getPlayersInDungeonRef() {
+        return playersInDungeonRef;
+    }
+
+    public DatabaseReference getDungeonRoomsRef() {
+        return dungeonRoomsRef;
+    }
 }
