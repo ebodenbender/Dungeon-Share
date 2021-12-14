@@ -8,6 +8,7 @@
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_host_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_player_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_player_request.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_host_dungeon.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_look_for_dungeon.xml" value="0.12604166666666666" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
@@ -15,6 +16,8 @@
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_my_dungeons2.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_player_dungeon_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_room_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/dungeon_card.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/room_card.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/menu/dungeon_menu.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
       </map>

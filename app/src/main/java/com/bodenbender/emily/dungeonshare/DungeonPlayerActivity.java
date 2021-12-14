@@ -3,9 +3,14 @@ package com.bodenbender.emily.dungeonshare;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
+import android.view.View;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +28,10 @@ public class DungeonPlayerActivity extends AppCompatActivity
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference activeDungeonsReference;
-    private List<Dungeon> activeDungeonsList;
+    private List<Pair<Dungeon, String>> activeDungeons;
+
+    private RecyclerView activeDungeonsRecyclerView;
+    private DungeonAdapter adapter; // adapter for recycler view
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,29 +45,62 @@ public class DungeonPlayerActivity extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         activeDungeonsReference = mFirebaseDatabase.getReference("/active_dungeons");
 
-        activeDungeonsList = new ArrayList<>();
+        activeDungeons = new ArrayList<>();
+
+        // set adapter for recycler view
+        activeDungeonsRecyclerView = findViewById(R.id.availableDungeonsRecyclerView);
+        adapter = new DungeonAdapter(this, new DungeonAdapter.DungeonList()
+        {
+            @Override
+            public Dungeon getDungeonAt(int position)
+            {
+                return activeDungeons.get(position).first;
+            }
+
+            @Override
+            public int getDungeonSize()
+            {
+                return activeDungeons.size();
+            }
+        });
+
+        adapter.setClickListener(new DungeonAdapter.ItemClickListener()
+        {
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                // launch activity to request player details (to send to DM for approval)
+                Intent intent = new Intent(DungeonPlayerActivity.this, DungeonPlayerRequestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        activeDungeonsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        activeDungeonsRecyclerView.setAdapter(adapter);
 
         ChildEventListener activeDungeonsCEL = new ChildEventListener()
         {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Dungeon dungeon = snapshot.getValue(Dungeon.class);
-                activeDungeonsList.add(dungeon);
+                Pair<Dungeon, String> dungeon = new Pair<>(snapshot.getValue(Dungeon.class), snapshot.getKey());
+                activeDungeons.add(dungeon);
+                adapter.notifyItemInserted(activeDungeons.indexOf(dungeon)); // TODO when copy/pasting this into recycler view for rooms, make sure it's indexed by room # instead of position in list
                 printActiveDungeonsList(); // TODO remove this when no longer needed for debugging
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {
-                Dungeon updatedDungeon = snapshot.getValue(Dungeon.class);
-                String shareCode = updatedDungeon.getShare_code();
+                Pair<Dungeon, String> updatedDungeon = new Pair<>(snapshot.getValue(Dungeon.class), snapshot.getKey());
+                String key = updatedDungeon.second;
                 int i = 0;
-                for (Dungeon dungeon : activeDungeonsList)
+                for (Pair<Dungeon, String> dungeon : activeDungeons)
                 {
-                    if (shareCode.equals(dungeon.getShare_code())) // using share code for indexing the list since share code will never change
+                    if (key.equals(dungeon.second)) // using key for indexing the list since share code will never change
                     {
-                        activeDungeonsList.set(i, updatedDungeon);
+                        activeDungeons.set(i, updatedDungeon);
+                        adapter.notifyItemChanged(activeDungeons.indexOf(updatedDungeon));
                     }
                     i++;
                 }
@@ -85,12 +126,13 @@ public class DungeonPlayerActivity extends AppCompatActivity
         // TODO we can detach this later
     }
 
-    public List<Dungeon> printActiveDungeonsList() // TODO remove this later; just using it to debug
+    // using this method for debugging
+    public List<Pair<Dungeon, String>> printActiveDungeonsList()
     {
-        for (int i = 0; i < activeDungeonsList.size(); i++)
+        for (int i = 0; i < activeDungeons.size(); i++)
         {
-            Log.d(TAG, "printActiveDungeonsList: " + activeDungeonsList.get(i).toString());
+            Log.d(TAG, "printActiveDungeonsList: " + activeDungeons.get(i).first.toString());
         }
-        return activeDungeonsList;
+        return activeDungeons;
     }
 }

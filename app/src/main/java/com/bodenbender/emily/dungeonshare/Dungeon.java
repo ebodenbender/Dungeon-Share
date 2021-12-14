@@ -58,4 +58,10 @@ public class Dungeon {
     public String getShare_code() {
         return share_code;
     }
+
+    public void updateValues(Dungeon other) {
+        this.DM_name = other.DM_name;
+        this.dungeon_name = other.dungeon_name;
+        this.share_code = other.share_code;
+    }
 }
