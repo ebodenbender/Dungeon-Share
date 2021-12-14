@@ -5,18 +5,22 @@
       <map>
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_broadcast.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dm_dungeon_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_host_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_player.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_dungeon_player_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_host_dungeon.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_look_for_dungeon.xml" value="0.12604166666666666" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_my_dungeons.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_my_dungeons2.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_player_dungeon_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/layout/activity_room_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/menu/dungeon_menu.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/embod/AndroidStudioProjects/DungeonShare/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/zburn/Documents/Dungeon-Share/app/src/main/res/layout/activity_dungeon_player_detail.xml" value="0.115625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
