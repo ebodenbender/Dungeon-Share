@@ -35,7 +35,7 @@ public class DungeonPlayerActivity extends AppCompatActivity
         // TODO put list of available dungeons in a recycler view
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        activeDungeonsReference = mFirebaseDatabase.getReference("/active_dungeons"); // TODO remove "RHE202" from path later once I can at least grab this one
+        activeDungeonsReference = mFirebaseDatabase.getReference("/active_dungeons");
 
         activeDungeonsList = new ArrayList<>();
 
@@ -46,12 +46,24 @@ public class DungeonPlayerActivity extends AppCompatActivity
             {
                 Dungeon dungeon = snapshot.getValue(Dungeon.class);
                 activeDungeonsList.add(dungeon);
-                Log.d(TAG, "onChildAdded: " + dungeon.toString());
+                printActiveDungeonsList(); // TODO remove this when no longer needed for debugging
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
+                Dungeon updatedDungeon = snapshot.getValue(Dungeon.class);
+                String shareCode = updatedDungeon.getShare_code();
+                int i = 0;
+                for (Dungeon dungeon : activeDungeonsList)
+                {
+                    if (shareCode.equals(dungeon.getShare_code())) // using share code for indexing the list since share code will never change
+                    {
+                        activeDungeonsList.set(i, updatedDungeon);
+                    }
+                    i++;
+                }
+                printActiveDungeonsList(); // TODO remove this when no longer needed for debugging
             }
 
             @Override
@@ -71,9 +83,14 @@ public class DungeonPlayerActivity extends AppCompatActivity
         };
         activeDungeonsReference.addChildEventListener(activeDungeonsCEL);
         // TODO we can detach this later
-        for (int i = 0; i < activeDungeonsList.size(); i++) // TODO seems to grab the data in onChildAdded just fine, yet this for loop doesn't execute?
+    }
+
+    public List<Dungeon> printActiveDungeonsList() // TODO remove this later; just using it to debug
+    {
+        for (int i = 0; i < activeDungeonsList.size(); i++)
         {
-            Log.d(TAG, "onCreate: " + activeDungeonsList.get(i).toString());
+            Log.d(TAG, "printActiveDungeonsList: " + activeDungeonsList.get(i).toString());
         }
+        return activeDungeonsList;
     }
 }
