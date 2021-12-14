@@ -14,15 +14,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class DungeonPlayerRequestActivity extends AppCompatActivity
 {
     static final String TAG = "PlayerRequestActivityTag";
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference playersInDungeonRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dungeon_player_request);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        playersInDungeonRef = mFirebaseDatabase.getReference("/players_in_dungeon");
 
         EditText playerNameEditText = findViewById(R.id.editTextPlayerName);
         EditText shareCodeEditText = findViewById(R.id.editTextShareCode);
@@ -37,12 +46,24 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
                         shareCodeEditText.getText().toString().isEmpty())
                 {
                     Toast.makeText(DungeonPlayerRequestActivity.this,
-                            "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+                            "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    // TODO check share code, if incorrect make a toast and clear the edit text,
-                    // TODO if share code is correct then send a request to DM
+                    Intent intent = getIntent();
+                    String shareCode = intent.getStringExtra("shareCode");
+                    String playerName = playerNameEditText.getText().toString();
+                    String inputShareCode = shareCodeEditText.getText().toString();
+                    if (inputShareCode.equals(shareCode))
+                    {
+                        playersInDungeonRef.child(inputShareCode).child(playerName).setValue(false);
+                    }
+                    else
+                    {
+                        Toast.makeText(DungeonPlayerRequestActivity.this,
+                                "Incorrect share code", Toast.LENGTH_SHORT).show();
+                        shareCodeEditText.setText("");
+                    }
                 }
             }
         });

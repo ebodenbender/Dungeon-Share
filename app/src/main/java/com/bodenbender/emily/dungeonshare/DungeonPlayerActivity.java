@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DungeonPlayerActivity extends AppCompatActivity
-{   // TODO delete LookForDungeonActivity once this is starting to look right
+{
     static final String TAG = "PlayerActivityTag";
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -38,9 +38,6 @@ public class DungeonPlayerActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dungeon_player);
-        // TODO get list of available dungeons
-        // TODO start new activity to request to connect to dungeon (on dungeon click in the recycler view)
-        // TODO put list of available dungeons in a recycler view
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         activeDungeonsReference = mFirebaseDatabase.getReference("/active_dungeons");
@@ -71,6 +68,7 @@ public class DungeonPlayerActivity extends AppCompatActivity
             {
                 // launch activity to request player details (to send to DM for approval)
                 Intent intent = new Intent(DungeonPlayerActivity.this, DungeonPlayerRequestActivity.class);
+                intent.putExtra("shareCode", activeDungeons.get(position).first.getShare_code());
                 startActivity(intent);
             }
         });
@@ -86,7 +84,6 @@ public class DungeonPlayerActivity extends AppCompatActivity
                 Pair<Dungeon, String> dungeon = new Pair<>(snapshot.getValue(Dungeon.class), snapshot.getKey());
                 activeDungeons.add(dungeon);
                 adapter.notifyItemInserted(activeDungeons.indexOf(dungeon)); // TODO when copy/pasting this into recycler view for rooms, make sure it's indexed by room # instead of position in list
-                printActiveDungeonsList(); // TODO remove this when no longer needed for debugging
             }
 
             @Override
@@ -104,12 +101,11 @@ public class DungeonPlayerActivity extends AppCompatActivity
                     }
                     i++;
                 }
-                printActiveDungeonsList(); // TODO remove this when no longer needed for debugging
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                // TODO implement this
             }
 
             @Override
