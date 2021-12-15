@@ -16,4 +16,5 @@
     <string name="visible_to_players">Visible to Players</string>
     <string name="room_description">Room Description</string>
     <string name="done">done</string>
+    <string name="share_code">Share Code</string>
 </resources>

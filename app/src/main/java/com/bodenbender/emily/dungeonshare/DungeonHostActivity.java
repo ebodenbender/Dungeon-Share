@@ -6,16 +6,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -39,6 +42,9 @@ public class DungeonHostActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private FirebaseDungeonHelper firebaseDungeonHelper;
     private DatabaseReference dungeonRoomReference;
+
+    private DatabaseReference dungeonPlayerReference;
+    private ChildEventListener playerListener;
 
     private List<Pair<DungeonRoom, String>> dungeonRooms;
 
@@ -72,6 +78,8 @@ public class DungeonHostActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         firebaseDungeonHelper = new FirebaseDungeonHelper(shareCode, new Dungeon(DMName, dungeonName, shareCode));
 
+        TextView shareCodeTextView = findViewById(R.id.shareCodeTextView);
+        shareCodeTextView.setText(shareCode);
         roomRecyclerView = findViewById(R.id.roomRecyclerView);
         Button addRoomButton = findViewById(R.id.addRoomButton);
         addRoomButton.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +188,63 @@ public class DungeonHostActivity extends AppCompatActivity {
             }
         });
 
+        playerListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String playerName = snapshot.getKey();
+                DatabaseReference playerRef = db.getReference("players_in_dungeon").child(shareCode).child(playerName);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DungeonHostActivity.this);
+                Log.d(TAG, "onChildAdded: Player Request to join");
+                alertDialog.setTitle("Player Request to Join")
+                        .setMessage(playerName + " is requesting to join" )
+                        .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d(TAG, "onClick: DM allowed entry for " + playerName);
+                                playerRef.setValue(true);
+                            }
+                        })
+                        .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d(TAG, "onClick: DM declined entry for " + playerName);
+                                playerRef.setValue(null);
+                            }
+                        });
+                alertDialog.show();
 
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: shareCodeListener was cancelled");
+            }
+        };
+
+        dungeonPlayerReference = db.getReference("players_in_dungeon").child(shareCode);
+        dungeonPlayerReference.addChildEventListener(playerListener);
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseDungeonHelper.returnDungeonKey(shareCode);
     }
 }
