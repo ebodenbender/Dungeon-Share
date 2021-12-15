@@ -104,8 +104,18 @@ public class DungeonPlayerActivity extends AppCompatActivity
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                // TODO implement this
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                String key = snapshot.getKey();
+                for (Pair<Dungeon, String> dungeon : activeDungeons)
+                {
+                    if (dungeon.second.equals(key))
+                    {
+                        int idx = activeDungeons.indexOf(dungeon);
+                        activeDungeons.remove(dungeon);
+                        adapter.notifyItemRemoved(idx);
+                    }
+                }
             }
 
             @Override
@@ -120,15 +130,5 @@ public class DungeonPlayerActivity extends AppCompatActivity
         };
         activeDungeonsReference.addChildEventListener(activeDungeonsCEL);
         // TODO we can detach this later
-    }
-
-    // using this method for debugging
-    public List<Pair<Dungeon, String>> printActiveDungeonsList()
-    {
-        for (int i = 0; i < activeDungeons.size(); i++)
-        {
-            Log.d(TAG, "printActiveDungeonsList: " + activeDungeons.get(i).first.toString());
-        }
-        return activeDungeons;
     }
 }
