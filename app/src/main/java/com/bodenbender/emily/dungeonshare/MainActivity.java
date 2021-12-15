@@ -45,10 +45,19 @@ public class MainActivity extends AppCompatActivity {
         Button hostDungeonButton = findViewById(R.id.hostDungeonButton);
         Button lookForDungeonButton = findViewById(R.id.lookForDungeonButton);
 
-                hostDungeonButton.setOnClickListener(new View.OnClickListener() {
+        hostDungeonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DungeonHostDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        lookForDungeonButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(MainActivity.this, DungeonPlayerActivity.class);
                 startActivity(intent);
             }
         });
@@ -57,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // TODO define a main_menu.xml file; inflate the menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
