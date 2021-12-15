@@ -17,6 +17,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
     EditText descriptionEditText;
     Button doneButton;
     String databaseKey;
+    CheckBox deleteCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
         visibleCheckBox = findViewById(R.id.checkBoxVisibleToPlayers);
         descriptionEditText = findViewById(R.id.editTextRoomDescription);
         doneButton = findViewById(R.id.doneButton);
+        deleteCheckBox = findViewById(R.id.deleteCheckBox);
 
         DungeonRoom dungeonRoom = null;
 
@@ -46,6 +48,10 @@ public class RoomDetailsActivity extends AppCompatActivity {
             }
         }
 
+        if (dungeonRoom == null) {
+            deleteCheckBox.setVisibility(View.GONE);
+        }
+
         DungeonRoom finalDungeonRoom = dungeonRoom;
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +61,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
                     // mark as a new DungeonRoom
                     intent.putExtra("new", true);
                 } else {
+                    intent.putExtra("delete", deleteCheckBox.isChecked());
                     intent.putExtra("databaseKey", databaseKey);
                     intent.putExtra("new", false);
                 }

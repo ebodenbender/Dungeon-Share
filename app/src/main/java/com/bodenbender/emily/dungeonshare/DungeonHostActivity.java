@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -79,7 +81,7 @@ public class DungeonHostActivity extends AppCompatActivity {
         firebaseDungeonHelper = new FirebaseDungeonHelper(shareCode, new Dungeon(DMName, dungeonName, shareCode));
 
         TextView shareCodeTextView = findViewById(R.id.shareCodeTextView);
-        shareCodeTextView.setText(shareCode);
+        shareCodeTextView.setText(dungeonName + ": " + shareCode);
         roomRecyclerView = findViewById(R.id.roomRecyclerView);
         Button addRoomButton = findViewById(R.id.addRoomButton);
         addRoomButton.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +125,9 @@ public class DungeonHostActivity extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: ");
                 Intent intent = result.getData();
                 if (intent != null) {
-                    if (intent.hasExtra("new") && intent.hasExtra("room")) {
+                    if (intent.hasExtra("delete") && intent.getBooleanExtra("delete", false)) {
+                        firebaseDungeonHelper.deleteRoom(intent.getStringExtra("databaseKey"));
+                    } else if (intent.hasExtra("new") && intent.hasExtra("room")) {
                         DungeonRoom room = intent.getParcelableExtra("room");
                         if (intent.getBooleanExtra("new", false)) {
                             // is a new room
@@ -215,9 +219,32 @@ public class DungeonHostActivity extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                if (snapshot.getValue() != null && !snapshot.getValue(Boolean.class) ) {
+                    String playerName = snapshot.getKey();
+                    DatabaseReference playerRef = db.getReference("players_in_dungeon").child(shareCode).child(playerName);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(DungeonHostActivity.this);
+                    Log.d(TAG, "onChildChanged: Player Request to join");
+                    alertDialog.setTitle("Player Request to Join")
+                            .setMessage(playerName + " is requesting to join")
+                            .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Log.d(TAG, "onClick: DM allowed entry for " + playerName);
+                                    playerRef.setValue(true);
+                                }
+                            })
+                            .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Log.d(TAG, "onClick: DM declined entry for " + playerName);
+                                    playerRef.setValue(null);
+                                }
+                            });
+                    alertDialog.show();
+                }
             }
 
             @Override
@@ -238,13 +265,33 @@ public class DungeonHostActivity extends AppCompatActivity {
 
         dungeonPlayerReference = db.getReference("players_in_dungeon").child(shareCode);
         dungeonPlayerReference.addChildEventListener(playerListener);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.dungeon_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.deleteDungeonMenuItem) {
+            FirebaseDungeonHelper.destroyDungeon(shareCode);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        FirebaseDungeonHelper.returnDungeonKey(shareCode);
     }
 }

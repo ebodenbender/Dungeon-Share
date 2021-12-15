@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +29,6 @@ public class DungeonHostDetailActivity extends AppCompatActivity {
     private String shareCode;
     private ChildEventListener shareCodeListener;
     private DatabaseReference dungeonKeyReference;
-    private boolean active;
 
 
 
@@ -59,6 +60,7 @@ public class DungeonHostDetailActivity extends AppCompatActivity {
                         intent.putExtra("shareCode", shareCode);
                         intent.putExtra("DMName", DMNameEditText.getText().toString());
                         intent.putExtra("DungeonName", DungeonNameEditText.getText().toString());
+                        shareCode = null;
                         startActivity(intent);
                     }
                 }
@@ -101,16 +103,27 @@ public class DungeonHostDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        active = true;
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.dungeon_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.deleteDungeonMenuItem) {
+            FirebaseDungeonHelper.destroyDungeon(shareCode);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         dungeonKeyReference.removeEventListener(shareCodeListener);
-        active = false;
     }
 
     @Override
@@ -124,6 +137,5 @@ public class DungeonHostDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (active && shareCode != null) FirebaseDungeonHelper.returnDungeonKey(shareCode);
     }
 }

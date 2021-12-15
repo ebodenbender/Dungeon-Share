@@ -37,7 +37,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/share_code"
         android:textAlignment="center"
-        android:textSize="32sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/addRoomButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

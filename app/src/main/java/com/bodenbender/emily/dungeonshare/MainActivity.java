@@ -63,13 +63,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     /** Returns true if the app was granted all the permissions. Otherwise, returns false. */
     private static boolean hasPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
@@ -81,23 +74,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /** Handles user acceptance (or denial) of our permission request. */
-    @Override
-    public void onRequestPermissionsResult (
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode != REQUEST_CODE_REQUIRED_PERMISSIONS) {
-            return;
-        }
-
-        for (int grantResult : grantResults) {
-            if (grantResult == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this, "Permissions Not Granted", Toast.LENGTH_LONG).show();
-                finish();
-                return;
-            }
-        }
-        recreate();
-    }
+//    /** Handles user acceptance (or denial) of our permission request. */
+//    @Override
+//    public void onRequestPermissionsResult (
+//            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode != REQUEST_CODE_REQUIRED_PERMISSIONS) {
+//            return;
+//        }
+//
+//        for (int grantResult : grantResults) {
+//            if (grantResult == PackageManager.PERMISSION_DENIED) {
+//                Toast.makeText(this, "Permissions Not Granted", Toast.LENGTH_LONG).show();
+//                finish();
+//                return;
+//            }
+//        }
+//        recreate();
+//    }
 }
