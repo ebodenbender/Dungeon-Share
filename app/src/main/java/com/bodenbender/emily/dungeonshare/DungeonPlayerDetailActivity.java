@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
-            {
+            {   // TODO if snapshot.isVisible_to_players() != visibleRooms.get(i).isVisible_to_players, then move between lists
                 Pair<DungeonRoom, String> updatedRoom = new Pair<>(snapshot.getValue(DungeonRoom.class), snapshot.getKey());
                 String key = updatedRoom.second;
                 int i = 0;
@@ -107,9 +108,21 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
                 {
                     if (key.equals(room.second)) // using key for indexing the list since key will never change
                     {
-                        visibleRooms.set(i, updatedRoom);
-                        // TODO sort rooms list again here
-                        adapter.notifyItemChanged(visibleRooms.indexOf(updatedRoom));
+                        if (updatedRoom.first.isVisible_to_players() != visibleRooms.get(i).first.isVisible_to_players())
+                        {
+                            // visibility changed
+                            hiddenRooms.add(visibleRooms.remove(i));
+                            // TODO notify adapter item removed
+                            adapter.notifyItemRemoved(i);
+                            Log.d(TAG, "onChildChanged: visible -> hidden");
+                        }
+                        else
+                        {
+                            visibleRooms.set(i, updatedRoom);
+                            // TODO sort rooms list again here
+                            adapter.notifyItemChanged(visibleRooms.indexOf(updatedRoom));
+                            Log.d(TAG, "onChildChanged: visibility same");
+                        }
                     }
                     i++;
                 }
@@ -118,15 +131,45 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
                 {
                     if (key.equals(room.second))
                     {
-                        hiddenRooms.set(j, updatedRoom);
+                        if (updatedRoom.first.isVisible_to_players() != hiddenRooms.get(j).first.isVisible_to_players())
+                        {
+                            // visibility changed
+                            visibleRooms.add(hiddenRooms.remove(j));
+                            // TODO sort rooms again
+                            // TODO notify adapter that item was added
+                            adapter.notifyItemInserted(visibleRooms.size() - 1);
+                            Log.d(TAG, "onChildChanged: hidden -> visible");
+                        }
+                        else
+                        {
+                            hiddenRooms.set(j, updatedRoom);
+                            Log.d(TAG, "onChildChanged: visibility same");
+                        }
                     }
                     j++;
                 }
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            public void onChildRemoved(@NonNull DataSnapshot snapshot)
+            {
+                // TODO implement this (walk through both lists and if the key is in there remove it)
+                // TODO if it's in the visibleRooms lists update adapter
+                String key = snapshot.getKey(); // TODO make sure this gets the key correctly
+                for (Pair<DungeonRoom, String> room : visibleRooms)
+                {
+                    if (room.second.equals(key))
+                    {
 
+                    }
+                }
+                for (Pair<DungeonRoom, String> room : hiddenRooms)
+                {
+                    if (room.second.equals(key))
+                    {
+
+                    }
+                }
             }
 
             @Override
@@ -140,7 +183,5 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             }
         };
         dungeonRoomsReference.addChildEventListener(dungeonRoomsCEL);
-
-        // TODO set up a ValueEventListener specifically for the visible_to_players field?
     }
 }

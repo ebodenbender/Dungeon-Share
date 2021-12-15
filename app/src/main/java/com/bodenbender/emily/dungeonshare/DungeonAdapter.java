@@ -31,7 +31,7 @@ public class DungeonAdapter extends RecyclerView.Adapter<DungeonAdapter.DungeonV
     @Override
     public void onBindViewHolder(@NonNull DungeonViewHolder holder, int position) {
         String dungeonName = dungeonList.getDungeonAt(position).getDungeon_name();
-        String dmName = dungeonList.getDungeonAt(position).getDM_name();
+        String dmName = dungeonList.getDungeonAt(position).getDm_name();
         holder.dungeonName.setText(dungeonName);
         holder.dmName.setText(dmName);
     }
