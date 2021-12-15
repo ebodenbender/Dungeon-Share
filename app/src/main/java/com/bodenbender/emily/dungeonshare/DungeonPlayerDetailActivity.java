@@ -102,51 +102,53 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
             {   // TODO if snapshot.isVisible_to_players() != visibleRooms.get(i).isVisible_to_players, then move between lists
                 Pair<DungeonRoom, String> updatedRoom = new Pair<>(snapshot.getValue(DungeonRoom.class), snapshot.getKey());
-                String key = updatedRoom.second;
-                int i = 0;
                 for (Pair<DungeonRoom, String> room : visibleRooms)
                 {
-                    if (key.equals(room.second)) // using key for indexing the list since key will never change
+                    if (updatedRoom.second.equals(room.second))
                     {
-                        if (updatedRoom.first.isVisible_to_players() != visibleRooms.get(i).first.isVisible_to_players())
+                        if (updatedRoom.first.isVisible_to_players() != room.first.isVisible_to_players())
                         {
                             // visibility changed
-                            hiddenRooms.add(visibleRooms.remove(i));
+                            int roomIndex = visibleRooms.indexOf(room);
+                            visibleRooms.remove(roomIndex);
+                            hiddenRooms.add(updatedRoom);
                             // TODO notify adapter item removed
-                            adapter.notifyItemRemoved(i);
-                            Log.d(TAG, "onChildChanged: visible -> hidden");
+                            adapter.notifyItemRemoved(roomIndex);
+                            Log.d(TAG, "onChildChanged: visible -> hidden"+ updatedRoom.second);
+                            return;
                         }
                         else
                         {
-                            visibleRooms.set(i, updatedRoom);
+                            visibleRooms.set(visibleRooms.indexOf(room), updatedRoom);
                             // TODO sort rooms list again here
                             adapter.notifyItemChanged(visibleRooms.indexOf(updatedRoom));
-                            Log.d(TAG, "onChildChanged: visibility same");
+                            Log.d(TAG, "onChildChanged: visibility same both visible" + updatedRoom.second);
+                            return;
                         }
                     }
-                    i++;
                 }
-                int j = 0;
                 for (Pair<DungeonRoom, String> room : hiddenRooms)
                 {
-                    if (key.equals(room.second))
+                    if (updatedRoom.second.equals(room.second))
                     {
-                        if (updatedRoom.first.isVisible_to_players() != hiddenRooms.get(j).first.isVisible_to_players())
+                        if (updatedRoom.first.isVisible_to_players() != room.first.isVisible_to_players())
                         {
                             // visibility changed
-                            visibleRooms.add(hiddenRooms.remove(j));
+                            hiddenRooms.remove(hiddenRooms.indexOf(room));
+                            visibleRooms.add(updatedRoom);
                             // TODO sort rooms again
                             // TODO notify adapter that item was added
                             adapter.notifyItemInserted(visibleRooms.size() - 1);
-                            Log.d(TAG, "onChildChanged: hidden -> visible");
+                            Log.d(TAG, "onChildChanged: hidden -> visible"+ updatedRoom.second);
+                            return;
                         }
                         else
                         {
-                            hiddenRooms.set(j, updatedRoom);
-                            Log.d(TAG, "onChildChanged: visibility same");
+                            hiddenRooms.set(hiddenRooms.indexOf(room), updatedRoom);
+                            Log.d(TAG, "onChildChanged: visibility same invisible"+ updatedRoom.second);
+                            return;
                         }
                     }
-                    j++;
                 }
             }
 

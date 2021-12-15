@@ -47,6 +47,23 @@ public class FirebaseDungeonHelper {
         }
     }
 
+
+    /**
+     * Sets all specific dungeon attributes to null
+     * @param shareCode
+     */
+    public static void destroyDungeon(String shareCode) {
+        if (shareCode != null) {
+            returnDungeonKey(shareCode);
+            FirebaseDatabase.getInstance().getReference("active_dungeons").child(shareCode).setValue(null);
+            Log.d(TAG, "destroyDungeon: " + shareCode);
+            FirebaseDatabase.getInstance().getReference("players_in_dungeon").child(shareCode).setValue(null);
+            Log.d(TAG, "destroyDungeon: " + shareCode);
+            FirebaseDatabase.getInstance().getReference("dungeon_rooms").child(shareCode).setValue(null);
+            Log.d(TAG, "destroyDungeon: " + shareCode);
+        }
+    }
+
     /**
      * Set up database record for new dungeon with empty data to be filled in later. Called after
      * selecting to make a new Dungeon-Share
@@ -83,4 +100,7 @@ public class FirebaseDungeonHelper {
         dungeonRoomsRef.child(roomKey).setValue(room);
     }
 
+    public void deleteRoom(String databaseKey) {
+        dungeonRoomsRef.child(databaseKey).setValue(null);
+    }
 }
