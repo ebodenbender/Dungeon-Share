@@ -83,7 +83,7 @@ public class DungeonPlayerActivity extends AppCompatActivity
             {
                 Pair<Dungeon, String> dungeon = new Pair<>(snapshot.getValue(Dungeon.class), snapshot.getKey());
                 activeDungeons.add(dungeon);
-                adapter.notifyItemInserted(activeDungeons.indexOf(dungeon)); // TODO when copy/pasting this into recycler view for rooms, make sure it's indexed by room # instead of position in list
+                adapter.notifyItemInserted(activeDungeons.indexOf(dungeon));
             }
 
             @Override

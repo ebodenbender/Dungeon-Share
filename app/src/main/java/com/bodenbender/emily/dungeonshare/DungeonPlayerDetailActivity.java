@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
 
     private FirebaseDatabase db;
     private DatabaseReference dungeonRoomsReference;
+    private DatabaseReference playersInDungeonReference;
     
     private List<Pair<DungeonRoom, String>> visibleRooms;
     private List<Pair<DungeonRoom, String>> hiddenRooms;
@@ -51,6 +53,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
 
         db = FirebaseDatabase.getInstance();
         dungeonRoomsReference = db.getReference("/dungeon_rooms").child(shareCode);
+        playersInDungeonReference = db.getReference("/players_in_dungeon").child(shareCode).child(playerName);
 
         visibleRooms = new ArrayList<>();
         hiddenRooms = new ArrayList<>();
@@ -84,6 +87,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
         roomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         roomRecyclerView.setAdapter(adapter);
 
+        // set listener for dungeonRooms
         ChildEventListener dungeonRoomsCEL = new ChildEventListener()
         {
             @Override
@@ -188,5 +192,26 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             }
         };
         dungeonRoomsReference.addChildEventListener(dungeonRoomsCEL);
+
+        // set listener for playersInDungeon (to see if player gets removed from dungeon)
+        playersInDungeonReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                Boolean player = snapshot.getValue(Boolean.class);
+                if (player == null)
+                {
+                    Toast.makeText(DungeonPlayerDetailActivity.this,
+                            "You have been removed from the dungeon", Toast.LENGTH_SHORT).show();
+                    DungeonPlayerDetailActivity.this.finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
