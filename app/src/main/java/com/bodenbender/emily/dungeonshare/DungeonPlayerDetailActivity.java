@@ -162,21 +162,21 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
-                // TODO implement this (walk through both lists and if the key is in there remove it)
-                // TODO if it's in the visibleRooms lists update adapter
-                String key = snapshot.getKey(); // TODO make sure this gets the key correctly
+                String key = snapshot.getKey();
                 for (Pair<DungeonRoom, String> room : visibleRooms)
                 {
                     if (room.second.equals(key))
                     {
-
+                        int idx = visibleRooms.indexOf(room);
+                        visibleRooms.remove(room);
+                        adapter.notifyItemRemoved(idx);
                     }
                 }
                 for (Pair<DungeonRoom, String> room : hiddenRooms)
                 {
                     if (room.second.equals(key))
                     {
-
+                        hiddenRooms.remove(room);
                     }
                 }
             }
