@@ -31,6 +31,8 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference playersInDungeonRef;
 
+    ValueEventListener playersInDungeonListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,28 +68,28 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
                     if (inputShareCode.equals(shareCode))
                     {
                         playersInDungeonRef.child(playerName).setValue(false);
-                        playersInDungeonRef.child(playerName).addValueEventListener(new ValueEventListener()
+                        playersInDungeonListener = new ValueEventListener()
                         {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot)
                             {
-
                                 Boolean requestAccepted = snapshot.getValue(Boolean.class);
                                 if (requestAccepted != null)
                                 {
                                     if (requestAccepted)
                                     {
                                         Intent intent = new Intent(DungeonPlayerRequestActivity.this, DungeonPlayerDetailActivity.class);
+                                        intent.putExtra("playerName", playerName);
                                         intent.putExtra("shareCode", shareCode);
+                                        DungeonPlayerRequestActivity.this.finish();
                                         startActivity(intent);
                                     }
                                 }
                                 else
                                 {
                                     Toast.makeText(DungeonPlayerRequestActivity.this,
-                                            "Failed to join dungeon", Toast.LENGTH_SHORT).show();
+                                            "Failed to join dungeon", Toast.LENGTH_SHORT).show(); // TODO this toast displays when value for playerName key is set to null even after finish() is called for this activity
                                     DungeonPlayerRequestActivity.this.finish();
-                                    // TODO if player is removed from a dungeon after joining, they stay in the dungeon activity anyway
                                 }
                             }
 
@@ -95,7 +97,8 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
                             public void onCancelled(@NonNull DatabaseError error) {
 
                             }
-                        });
+                        };
+                        playersInDungeonRef.child(playerName).addValueEventListener(playersInDungeonListener);
                     }
                     else
                     {
@@ -106,5 +109,12 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() 
+    {
+        super.onDestroy();
+        playersInDungeonRef.removeEventListener(playersInDungeonListener);
     }
 }

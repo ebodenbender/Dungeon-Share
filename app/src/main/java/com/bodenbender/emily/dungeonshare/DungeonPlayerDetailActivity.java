@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
 
     private FirebaseDatabase db;
     private DatabaseReference dungeonRoomsReference;
+    private DatabaseReference playersInDungeonReference;
     
     private List<Pair<DungeonRoom, String>> visibleRooms;
     private List<Pair<DungeonRoom, String>> hiddenRooms;
@@ -42,10 +45,15 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_dungeon_player_detail);
 
         Intent intent = getIntent();
+        String playerName = intent.getStringExtra("playerName");
         String shareCode = intent.getStringExtra("shareCode");
+
+        TextView playerNameTextView = findViewById(R.id.playerNameTextView);
+        playerNameTextView.setText(playerName);
 
         db = FirebaseDatabase.getInstance();
         dungeonRoomsReference = db.getReference("/dungeon_rooms").child(shareCode);
+        playersInDungeonReference = db.getReference("/players_in_dungeon").child(shareCode).child(playerName);
 
         visibleRooms = new ArrayList<>();
         hiddenRooms = new ArrayList<>();
@@ -79,6 +87,7 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
         roomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         roomRecyclerView.setAdapter(adapter);
 
+        // set listener for dungeonRooms
         ChildEventListener dungeonRoomsCEL = new ChildEventListener()
         {
             @Override
@@ -153,21 +162,21 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot)
             {
-                // TODO implement this (walk through both lists and if the key is in there remove it)
-                // TODO if it's in the visibleRooms lists update adapter
-                String key = snapshot.getKey(); // TODO make sure this gets the key correctly
+                String key = snapshot.getKey();
                 for (Pair<DungeonRoom, String> room : visibleRooms)
                 {
                     if (room.second.equals(key))
                     {
-
+                        int idx = visibleRooms.indexOf(room);
+                        visibleRooms.remove(room);
+                        adapter.notifyItemRemoved(idx);
                     }
                 }
                 for (Pair<DungeonRoom, String> room : hiddenRooms)
                 {
                     if (room.second.equals(key))
                     {
-
+                        hiddenRooms.remove(room);
                     }
                 }
             }
@@ -183,5 +192,26 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
             }
         };
         dungeonRoomsReference.addChildEventListener(dungeonRoomsCEL);
+
+        // set listener for playersInDungeon (to see if player gets removed from dungeon)
+        playersInDungeonReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                Boolean player = snapshot.getValue(Boolean.class);
+                if (player == null)
+                {
+                    Toast.makeText(DungeonPlayerDetailActivity.this,
+                            "You have been removed from the dungeon", Toast.LENGTH_SHORT).show();
+                    DungeonPlayerDetailActivity.this.finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
