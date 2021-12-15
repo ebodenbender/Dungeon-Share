@@ -78,6 +78,7 @@ public class DungeonPlayerRequestActivity extends AppCompatActivity
                                     if (requestAccepted)
                                     {
                                         Intent intent = new Intent(DungeonPlayerRequestActivity.this, DungeonPlayerDetailActivity.class);
+                                        intent.putExtra("shareCode", shareCode);
                                         startActivity(intent);
                                     }
                                 }
