@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +43,11 @@ public class DungeonPlayerDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_dungeon_player_detail);
 
         Intent intent = getIntent();
+        String playerName = intent.getStringExtra("playerName");
         String shareCode = intent.getStringExtra("shareCode");
+
+        TextView playerNameTextView = findViewById(R.id.playerNameTextView);
+        playerNameTextView.setText(playerName);
 
         db = FirebaseDatabase.getInstance();
         dungeonRoomsReference = db.getReference("/dungeon_rooms").child(shareCode);
